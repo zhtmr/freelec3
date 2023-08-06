@@ -4,9 +4,11 @@ import com.jojoldu.book.springboot.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
+@DynamicUpdate
 @Getter
 @NoArgsConstructor
 @Entity

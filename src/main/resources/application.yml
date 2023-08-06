@@ -1,0 +1,29 @@
+spring:
+  h2:
+    console:
+      settings:
+        web-allow-others: true
+      enabled: 'true'
+  session:
+    store-type: jdbc
+  jpa:
+    show-sql: 'true'
+  profiles:
+    include: 'oauth'
+    mustache:
+      cache: 'false'
+    devtools:
+      restart:
+        enabled: 'false'
+      livereload:
+        enabled: 'true'
+
+  # Test OAuth
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test
+            client-secret: test
+            scope: profile,email

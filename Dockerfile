@@ -1,0 +1,8 @@
+# openjdk8 기반에서 구동
+FROM openjdk:8-jdk
+
+COPY build/libs/*.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","/app.jar"]
