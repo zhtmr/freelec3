@@ -35,6 +35,14 @@ configurations {
     }
 }
 
+// Enable annotation processing
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+
 
 
 dependencies {
@@ -51,10 +59,22 @@ dependencies {
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile("org.springframework.security:spring-security-test")
+    annotationProcessor('org.projectlombok:lombok')
+    testAnnotationProcessor('org.projectlombok:lombok')
 }
 
+// 다중 모듈 프로젝트 빌드할때(node,spring)
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+
 node {
-    version = '14.21.3'
+    version = '16.20.1'
     download = true
     nodeModulesDir = file("${project.projectDir}/src/main/resources/static")
     distBaseUrl = 'https://direct.nodejs.org/dist/'
@@ -68,9 +88,3 @@ copyFrontLib.dependsOn 'npmInstall'
 compileJava.dependsOn 'copyFrontLib'
 
 
-// Enable annotation processing
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-}
