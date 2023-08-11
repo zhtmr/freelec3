@@ -64,6 +64,13 @@ dependencies {
 }
 
 
+/*
+bootJar { enabled = false }: 이 부분은 Spring Boot에서 생성되는 실행 가능한 JAR 파일 (bootJar)을 생성하지 않도록 설정하고 있습니다. Spring Boot는 기본적으로 실행 가능한 JAR 파일을 생성하도록 설정되어 있습니다. 하지만 이 설정을 false로 변경함으로써 실행 가능한 JAR 파일을 생성하지 않게 됩니다.
+
+jar { enabled = true }: 이 부분은 일반적인 JAR 파일을 생성하도록 설정하고 있습니다. Spring Boot 프로젝트가 아닌 일반적인 Java 프로젝트에서 사용되는 JAR 파일을 생성하도록 설정되어 있습니다. 이 설정을 true로 변경함으로써 일반적인 JAR 파일을 생성하게 됩니다.
+
+이 코드 조각은 프로젝트의 빌드 설정을 변경함으로써 실행 가능한 Spring Boot JAR 파일 대신 일반적인 JAR 파일을 생성하도록 하거나, 또는 그 반대로 할 때 사용될 수 있습니다.
+* */
 //bootJar {
 //    enabled = false
 //}
