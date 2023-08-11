@@ -13,15 +13,12 @@ spring:
         dialect: 'org.hibernate.dialect.MySQL5InnoDBDialect'
 
 
-
-
-
-# Test OAuth
-security:
-  oauth2:
-    client:
-      registration:
-        google:
-          client-id: test
-          client-secret: test
-          scope: profile,email
+  # Test OAuth
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test
+            client-secret: test
+            scope: profile,email
