@@ -63,14 +63,14 @@ dependencies {
     testAnnotationProcessor('org.projectlombok:lombok')
 }
 
-// 다중 모듈 프로젝트 빌드할때(node,spring)
-bootJar {
-    enabled = false
-}
 
-jar {
-    enabled = true
-}
+//bootJar {
+//    enabled = false
+//}
+//
+//jar {
+//    enabled = true
+//}
 
 
 node {
