@@ -7,8 +7,8 @@ todo :
 
 trouble shooting :
   1. ec2 배포 후 빌드 단계에서 멈춤 현상 (메모리부족. 스왑메모리 설정)  
-     1. 이 예제 dd 명령에서 스왑 파일은 4GB(128MB x 32)  
-    ```$ sudo dd if=/dev/zero of=/swapfile bs=128M count=32```  
+     1. t2.micro 기준(램 1기가) 권장 스왑 파일은 2GB(128MB x 16)  
+    ```$ sudo dd if=/dev/zero of=/swapfile bs=128M count=16```  
      2. 스왑 파일의 읽기 및 쓰기 권한을 업데이트    
     ```$ sudo chmod 600 /swapfile```  
      3. Linux 스왑 영역을 설정  
