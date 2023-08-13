@@ -21,6 +21,7 @@ trouble shooting :
    
         편집기에서 파일을 엽니다.  
      ```$ sudo vi /etc/fstab```  
+     
         파일 끝에 다음 줄을 새로 추가하고 파일을 저장한 다음 종료합니다.  
      ```/swapfile swap swap defaults 0 0```  
      
