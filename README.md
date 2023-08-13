@@ -23,9 +23,9 @@ trouble shooting :
         파일 끝에 다음 줄을 새로 추가하고 파일을 저장한 다음 종료  
      ```/swapfile swap swap defaults 0 0```  
      
-  - https://hjjooace.tistory.com/42  
-  - https://kth022.tistory.com/15?category=1045193  
-  - https://repost.aws/ko/knowledge-center/ec2-memory-swap-file
+     - https://hjjooace.tistory.com/42  
+     - https://kth022.tistory.com/15?category=1045193  
+     - https://repost.aws/ko/knowledge-center/ec2-memory-swap-file
 
   2. 크롬에서 ec2 dns 로 접속 안됨. (https -> http)  
     - 크롬에서 https 권유 정책으로 바뀌면서 기본적으로 도메인 앞에 https 로 세팅됨. https -> http 로 변경 후 접속
