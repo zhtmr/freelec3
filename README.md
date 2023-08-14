@@ -4,7 +4,8 @@ todo :
   1. github action 연동
   2. 도커 멀티플랫폼 빌드
   3. node lib gradle 빌드
-  4. 카카오 로그인 추가 
+  4. 카카오 로그인 추가
+  5. 세션 기반 로그인 -> jwt 로 바꿔보기
 
 trouble shooting :
   1. ec2 배포 후 빌드 단계에서 멈춤 현상 (메모리부족. 스왑메모리 설정)  
