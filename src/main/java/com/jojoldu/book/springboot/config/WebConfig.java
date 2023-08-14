@@ -1,6 +1,7 @@
 package com.jojoldu.book.springboot.config;
 
 import com.jojoldu.book.springboot.config.auth.LoginUserArgumentResolver;
+import com.jojoldu.book.springboot.config.useragent.UserAgentArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -12,9 +13,11 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     private final LoginUserArgumentResolver loginUserArgumentResolver;
+    private final UserAgentArgumentResolver userAgentArgumentResolver;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(loginUserArgumentResolver);
+        resolvers.add(userAgentArgumentResolver);
     }
 }

@@ -30,6 +30,7 @@ public class OAuthAttributes {
     }
 
     private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+        // 네이버의 경우 로그인 api 결과 json 에서 속성들이 'response' 안에 들어있음.
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 
         return OAuthAttributes.builder()
