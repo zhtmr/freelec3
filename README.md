@@ -1,7 +1,7 @@
 # freelec3
 
 todo : 
-  1. github action 연동
+  1. github action 연동 ( + slack 노티)
   2. 도커 멀티플랫폼 빌드
   3. node lib gradle 빌드
   4. 카카오 로그인 추가
