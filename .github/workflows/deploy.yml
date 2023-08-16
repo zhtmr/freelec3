@@ -66,6 +66,16 @@ jobs:
 
     # slack으로 메시지 발송
     - name: send message to slack
-      run: curl -X POST -H "Content-type:application/json" --data '{"text":" + ${ GITHUB_REPOSITORY } + " + "배포 완료!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+      uses: 8398a7/action-slack@v3
+      with:
+        status: ${{ job.status }}
+        author_name: ㅋㅋ
+        fields: repo,commit,message,author # action,eventName,ref,workflow,job,took 추가할 수 있음
+        mention: here
+        if_mention: failure,cancelled
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+      if: always() # Pick up events even if the job fails or is canceled.
+#      run: curl -X POST -H "Content-type:application/json" --data '{"text":"배포 완료!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
 
 
