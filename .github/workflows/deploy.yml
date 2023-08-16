@@ -66,6 +66,6 @@ jobs:
 
     # slack으로 메시지 발송
     - name: send message to slack
-      run: curl -X POST -H "Content-type:application/json" --data '{"text":"$[GITHUB_REPOSITORY] 배포 완료!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+      run: curl -X POST -H "Content-type:application/json" --data '{"text":"${GITHUB_REPOSITORY} 배포 완료!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
 
 
