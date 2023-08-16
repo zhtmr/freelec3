@@ -74,7 +74,7 @@ jobs:
         mention: here
         if_mention: failure,cancelled
       env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required.
       if: always() # Pick up events even if the job fails or is canceled.
 #      run: curl -X POST -H "Content-type:application/json" --data '{"text":"배포 완료!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
 
