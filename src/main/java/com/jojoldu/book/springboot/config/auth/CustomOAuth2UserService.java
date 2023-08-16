@@ -51,7 +51,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
                 .orElse(attributes.toEntity());
         return userRepository.save(user);
-//        return user; 해당 코드가 작동하지 않는 이유
+//        return user; 해당 코드가 작동하지 않는 이유.
 //        1. 영속성 컨텍스트가 관리하는 엔티티가 한 트랜잭션 안에서 엔티티 변경이 이루어질 경우에 갱신됨.
 //        2. detach된 엔티티 (준영속), DB에 반영되기 전 처음 생성된 엔티티 (비영속) 는 더티체킹 대상에 해당되지 않음.
     }
