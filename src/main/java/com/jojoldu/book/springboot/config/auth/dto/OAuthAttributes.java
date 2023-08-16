@@ -24,12 +24,28 @@ public class OAuthAttributes {
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
         if("naver".equals(registrationId)) {
-            return ofNaver("id", attributes);
+            return ofNaver(attributes);
+        }if("kakao".equals(registrationId)) {
+            return ofKakao(attributes);
         }
         return ofGoogle(userNameAttributeName, attributes);
     }
 
-    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+    // TODO 카카오 로그인 추가
+    private static OAuthAttributes ofKakao(Map<String, Object> attributes) {
+//        System.out.println(">>>>>>>>>>>>" + attributes);
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+        Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+        return OAuthAttributes.builder()
+                .name(String.valueOf(profile.get("nickname")))
+                .email(String.valueOf(kakaoAccount.get("email")))
+                .picture(String.valueOf(profile.get("profile_image_url")))
+                .attributes(attributes)
+                .nameAttributeKey("id")
+                .build();
+    }
+
+    private static OAuthAttributes ofNaver(Map<String, Object> attributes) {
         // 네이버의 경우 로그인 api 결과 json 에서 속성들이 'response' 안에 들어있음.
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 
@@ -38,7 +54,7 @@ public class OAuthAttributes {
                 .email(String.valueOf(response.get("email")))
                 .picture(String.valueOf(response.get("profile_image")))
                 .attributes(response)
-                .nameAttributeKey(userNameAttributeName)
+                .nameAttributeKey("id")
                 .build();
     }
 
