@@ -69,7 +69,7 @@ jobs:
       uses: 8398a7/action-slack@v3
       with:
         status: ${{ job.status }}
-        author_name: 성원
+        author_name: zhtmr
         fields: repo,message,commit,author,action,eventName,ref,workflow,job,took  # action,eventName,ref,workflow,job,took 추가할 수 있음
         mention: here
         if_mention: failure,cancelled
