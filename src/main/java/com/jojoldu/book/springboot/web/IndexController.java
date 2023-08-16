@@ -27,7 +27,7 @@ public class IndexController {
         // 로그인한 유저 세션 가져오기
         //  -> 어노테이션 기반(LoginUserArgumentResolver) 으로 변경 시 컨트롤러로 전달되는 파라미터에서(user) 모두 검증이 끝난 상태로 가져옴.
         //     - 파라미터는 세션에서 가져옴(resolveArgument 메소드 리턴 부분. httpsession.getAttribute)
-        //     - 정의한 어노테이션이 붙어있는지 / 타입 체크.
+        //     - 정의한 어노테이션이 붙어있는지 / 타입 체크..
 
 //        SessionUser user = (SessionUser) httpSession.getAttribute("user");
 
