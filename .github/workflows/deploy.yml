@@ -52,9 +52,21 @@ jobs:
       run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}" # (10)
       shell: bash
 
-    - name: Make zip file
-      run: zip -r ./$PROJECT_NAME.zip .         # (12)
+    - name: Generate deployment package # (final) 필요한 파일만 zip
+      run: |
+        mkdir -p before-deploy
+        cp scripts/*.sh before-deploy/
+        cp appspec.yml before-deploy/
+        cp build/lib/*.jar before-deploy/
+        cd before-deploy && zip -r before-deploy *
+        cd ../ && mkdir -p deploy
+        mv before-deploy/before-deploy.zip deploy/$PROJECT_NAME.zip
       shell: bash
+
+#  위 Generate deployment package 사용
+#    - name: Make zip file
+#      run: zip -r ./$PROJECT_NAME.zip .         # (12)
+#      shell: bash
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1      #(13)
@@ -63,8 +75,8 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-northeast-2
 
-    - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./$PROJECT_NAME.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$PROJECT_NAME.zip    #(14)
+    - name: Upload to S3 # ./$PROJECT_NAME.zip -> ./deploy/$PROJECT_NAME.zip 로 변경!
+      run: aws s3 cp --region ap-northeast-2 ./deploy/$PROJECT_NAME.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$PROJECT_NAME.zip    #(14)
 
     - name: Code Deploy
       run: aws deploy create-deployment 
