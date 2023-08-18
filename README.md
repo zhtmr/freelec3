@@ -17,7 +17,7 @@ todo :
         - 이용자가 많아질 수록 세션은 서버에 부담 증가
      
       > 소규모 서비스, 저사양 서버 -> 세션 기반  
-        중규모 서비스, 여러대 서버 -> 토큰 기반
+        중/대규모 서비스, 여러대 서버 -> 토큰 기반
   
 
 ---
@@ -46,3 +46,10 @@ troubleshooting :
 
   2. 크롬에서 ec2 dns 로 접속 안됨. (https -> http)  
     - 크롬에서 https 권유 정책으로 바뀌면서 기본적으로 도메인 앞에 https 로 세팅됨. https -> http 로 변경 후 접속
+
+  3. code deploy 배포 오류 시 로그 보는 방법  
+     1. aws console 에서 확인  
+        ![view event 클릭 후 확인](img.png "view event 클릭 후 확인")  
+
+     2. ```/var/log/aws/codedeploy-agent``` 에서 로그 확인 가능  
+       ![img_1.png](img_1.png)
