@@ -53,3 +53,7 @@ troubleshooting :
 
      2. ```/var/log/aws/codedeploy-agent``` 에서 로그 확인 가능  
        ![img_1.png](img_1.png)
+
+     3. ```/opt/codedeploy-agent/deployment-root``` 에서 code deploy 로그 확인 가능
+        echo 확인 가능
+     
