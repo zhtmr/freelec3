@@ -31,7 +31,7 @@ public class OAuthAttributes {
         return ofGoogle(userNameAttributeName, attributes);
     }
 
-    // TODO 카카오 로그인 추가
+    // 카카오 로그인 추가
     private static OAuthAttributes ofKakao(Map<String, Object> attributes) {
 //        System.out.println(">>>>>>>>>>>>" + attributes);
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
