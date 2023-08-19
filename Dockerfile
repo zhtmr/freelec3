@@ -1,5 +1,5 @@
 # 빌드 스테이지
-FROM gradle:4.10.2-jdk8-alpine as build
+FROM gradle:5.0-jdk8-alpine as build
 
 ENV APP_HOME=/apps
 
