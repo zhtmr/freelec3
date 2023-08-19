@@ -13,12 +13,12 @@ spring:
         dialect: 'org.hibernate.dialect.MySQL5InnoDBDialect'
   profiles:
     include: 'oauth'
-    mustache:
-      cache: 'false'
-    devtools:
-      restart:
-        enabled: 'false'
-      livereload:
-        enabled: 'true'
+  mustache:
+    cache: 'false'
+  devtools:
+    restart:
+      enabled: 'false'
+    livereload:
+      enabled: 'true'
 
 
