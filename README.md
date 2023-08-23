@@ -95,7 +95,7 @@ memo :
 
   
     
-- <b>health.sh</b>
+- <b>health.sh</b>  
 ![img_4.png](img_4.png)
   - start.sh 이후 실행된 *nginx가 바라보고 있지 않는 프로필*을 nginx가 바라보게 함
   - ```real*``` 프로필로 잘 배포되었는지 확인 + <U>*nginx 가 바라보게 포트 변경 (switch.sh)*</U>
