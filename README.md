@@ -93,6 +93,7 @@ memo :
     - <U>*현재 nginx가 가리키고 있지 <b>않는</b> 프로필 실행시킴 (health.sh 에서 nginx 가 가리키게 될 예정)*</U> 
 
   
+
 - <b>health.sh</b>
 ![img_4.png](img_4.png)
   - start.sh 이후 실행된 *nginx가 바라보고 있지 않는 프로필*을 nginx가 바라보게 함
