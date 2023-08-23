@@ -1,6 +1,6 @@
 # freelec3
 
-todo : 
+### todo : 
   1. github action 연동 ( + slack 노티)
   2. 도커 멀티플랫폼 빌드
   3. node lib gradle 빌드
@@ -23,7 +23,7 @@ todo :
 
 ---
 
-troubleshooting :
+### troubleshooting :
   1. ec2 배포 후 빌드 단계에서 멈춤 현상 (메모리부족. 스왑메모리 설정)  
      1. t2.micro 기준(램 1기가) 권장 스왑 파일은 2GB(128MB x 16)  
     ```$ sudo dd if=/dev/zero of=/swapfile bs=128M count=16```  
@@ -60,7 +60,7 @@ troubleshooting :
      
 ---
 
-memo :
+### memo :
 
 - <b>appspec.yml</b>  
 ![img_2.png](img_2.png)  
