@@ -86,13 +86,13 @@ memo :
     - 이후 :
       - 계속 번갈아 가면서 바뀐다  
 
-
+  
 - <b>start.sh</b>
   - 기존의 deploy.sh 와 같음. 실행 프로필만 IDLE_PROFILE 로 세팅.
     - stop.sh 에 의해 종료된 프로필이 새로 배포되어 실행될 프로필이 된다.
     - <U>*현재 nginx가 가리키고 있지 <b>않는</b> 프로필 실행시킴 (health.sh 에서 nginx 가 가리키게 될 예정)*</U> 
 
-
+  
 - <b>health.sh</b>
 ![img_4.png](img_4.png)
   - start.sh 이후 실행된 *nginx가 바라보고 있지 않는 프로필*을 nginx가 바라보게 함
