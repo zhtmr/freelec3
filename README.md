@@ -58,3 +58,42 @@ troubleshooting :
      3. ```/opt/codedeploy-agent/deployment-root``` 에서 code deploy 로그 확인 가능
         echo 확인 가능
      
+---
+
+memo :
+
+- <b>appspec.yml</b>  
+![img_2.png](img_2.png)  
+  - code deploy 에 의해 s3 에서 ec2 로 파일 이동 후 실행 훅
+    - stop.sh --> start.sh --> health.sh  
+    
+
+- <b>stop.sh</b>  
+![img_3.png](img_3.png)  
+  - profile.sh 에서 쉬고있는 profile 과 port 를 찾는다
+  - <U>*현재 nginx 가 가리키지않는 프로필(IDLE_PROFILE)의 jar를 종료시킴*</U>
+  - 처음 배포 시 종료 할 애플리케이션 없음. (8081로 구동)
+    - 첫번째 배포 시 : 
+      - CURRENT_PROFILE = ```real2``` (∵ RESPONSE_CODE >= 400)
+      - IDLE_PROFILE = ```real1```
+      - IDLE_PORT = ```8081```
+      - 이 경우 기존 구동중인 애플리케이션 없으므로 ```real1``` 프로필로 ```8081``` 에서 jar 실행될 예정
+    - 두번째 배포 시 :
+      - CURRENT_PROFILE = ```real1``` (∵ curl -s http://localhost/profile 시 기존에 배포된 프로필 : ```real1```)
+      - IDLE_PROFILE =  ```real2```
+      - IDLE_PORT = ```8082```
+      - 이 경우 기존의 ```real1``` 프로필 종료
+    - 이후 :
+      - 계속 번갈아 가면서 바뀐다  
+
+
+- <b>start.sh</b>
+  - 기존의 deploy.sh 와 같음. 실행 프로필만 IDLE_PROFILE 로 세팅.
+    - stop.sh 에 의해 종료된 프로필이 새로 배포되어 실행될 프로필이 된다.
+    - <U>*현재 nginx가 가리키고 있지 <b>않는</b> 프로필 실행시킴 (health.sh 에서 nginx 가 가리키게 될 예정)*</U> 
+
+
+- <b>health.sh</b>
+![img_4.png](img_4.png)
+  - start.sh 이후 실행된 *nginx가 바라보고 있지 않는 프로필*을 nginx가 바라보게 함
+  - ```real*``` 프로필로 잘 배포되었는지 확인 + <U>*nginx 가 바라보게 포트 변경 (switch.sh)*</U>
