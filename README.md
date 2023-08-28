@@ -241,7 +241,7 @@
             exposure:
               include: metrics,prometheus
     ~~~
-   - 스크립트 설정
+   - 스크립트 설정 (메모리 사용률 85% 이상일때 동작)
       ~~~sh
         #!/bin/bash
 
