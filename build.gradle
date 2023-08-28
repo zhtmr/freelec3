@@ -57,8 +57,8 @@ dependencies {
 
     compile("org.mariadb.jdbc:mariadb-java-client")
 
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("io.micrometer:micrometer-registry-prometheus")
+//    implementation("org.springframework.boot:spring-boot-starter-actuator")
+//    implementation("io.micrometer:micrometer-registry-prometheus")
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile("org.springframework.security:spring-security-test")
