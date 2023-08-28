@@ -265,6 +265,7 @@
       ~~~
    - 실행
      ~~~sh
+      chmod +x memory_monitor.sh
       ./memory_monitor.sh &
      ~~~
      
