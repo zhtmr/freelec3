@@ -249,17 +249,17 @@
         MEMORY_THRESHOLD=85  # Percentage threshold
     
         while true; do
-        MEMORY_USAGE=$(curl -s "$APP_URL" | grep jvm_memory_used_bytes | awk '{print $2}')
-        MEMORY_MAX=$(curl -s "$APP_URL" | grep jvm_memory_max_bytes | awk '{print $2}')
-        MEMORY_PERCENTAGE=$(bc <<< "scale=2; $MEMORY_USAGE / $MEMORY_MAX * 100")
+          MEMORY_USAGE=$(curl -s "$APP_URL" | grep jvm_memory_used_bytes | awk '{print $2}')
+          MEMORY_MAX=$(curl -s "$APP_URL" | grep jvm_memory_max_bytes | awk '{print $2}')
+          MEMORY_PERCENTAGE=$(bc <<< "scale=2; $MEMORY_USAGE / $MEMORY_MAX * 100")
 
-        if (( $(echo "$MEMORY_PERCENTAGE > $MEMORY_THRESHOLD" | bc -l) )); then
-            echo "Memory utilization is above $MEMORY_THRESHOLD%. Taking action..."
-            # Add your action here, such as sending a notification or restarting the app
-            # For example: systemctl restart your-app-service
-        fi
+          if (( $(echo "$MEMORY_PERCENTAGE > $MEMORY_THRESHOLD" | bc -l) )); then
+              echo "Memory utilization is above $MEMORY_THRESHOLD%. Taking action..."
+              # Add your action here, such as sending a notification or restarting the app
+              # For example: systemctl restart your-app-service
+          fi
 
-        sleep 300  # Check every 5 minutes
+          sleep 300  # Check every 5 minutes
         done
 
       ~~~
