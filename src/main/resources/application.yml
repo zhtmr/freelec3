@@ -21,11 +21,11 @@ spring:
     livereload:
       enabled: 'true'
 
-management:
-  endpoints:
-    prometheus:
-      enabled: true
-    web:
-      exposure:
-        include: metrics,prometheus
+#management:
+#  endpoints:
+#    prometheus:
+#      enabled: true
+#    web:
+#      exposure:
+#        include: metrics,prometheus
 
