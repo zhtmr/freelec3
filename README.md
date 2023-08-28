@@ -225,25 +225,46 @@
   - ```real*``` 프로필로 잘 배포되었는지 확인 + <U>*nginx 가 바라보게 포트 변경 (switch.sh)*</U>
 
 
-- 모니터링
-  ~~~sh
-    #!/bin/bash
+- <b>모니터링</b>  
+  - 구성
+    ~~~spel
+      implementation("org.springframework.boot:spring-boot-starter-actuator")
+      implementation("io.micrometer:micrometer-registry-prometheus")
+    ~~~
+  - application.yml 에 추가
+    ~~~yaml
+      management:
+        endpoints:
+          prometheus:
+            enabled: true
+          web:
+            exposure:
+              include: metrics,prometheus
+    ~~~
+   - 스크립트 설정
+      ~~~sh
+        #!/bin/bash
 
-    APP_URL="http://localhost:8080/actuator/prometheus"  # Update with your actual app URL
-    MEMORY_THRESHOLD=85  # Percentage threshold
+        APP_URL="http://localhost:8080/actuator/prometheus"  # Update with your actual app URL
+        MEMORY_THRESHOLD=85  # Percentage threshold
     
-    while true; do
-    MEMORY_USAGE=$(curl -s "$APP_URL" | grep jvm_memory_used_bytes | awk '{print $2}')
-    MEMORY_MAX=$(curl -s "$APP_URL" | grep jvm_memory_max_bytes | awk '{print $2}')
-    MEMORY_PERCENTAGE=$(bc <<< "scale=2; $MEMORY_USAGE / $MEMORY_MAX * 100")
+        while true; do
+        MEMORY_USAGE=$(curl -s "$APP_URL" | grep jvm_memory_used_bytes | awk '{print $2}')
+        MEMORY_MAX=$(curl -s "$APP_URL" | grep jvm_memory_max_bytes | awk '{print $2}')
+        MEMORY_PERCENTAGE=$(bc <<< "scale=2; $MEMORY_USAGE / $MEMORY_MAX * 100")
 
-    if (( $(echo "$MEMORY_PERCENTAGE > $MEMORY_THRESHOLD" | bc -l) )); then
-        echo "Memory utilization is above $MEMORY_THRESHOLD%. Taking action..."
-        # Add your action here, such as sending a notification or restarting the app
-        # For example: systemctl restart your-app-service
-    fi
+        if (( $(echo "$MEMORY_PERCENTAGE > $MEMORY_THRESHOLD" | bc -l) )); then
+            echo "Memory utilization is above $MEMORY_THRESHOLD%. Taking action..."
+            # Add your action here, such as sending a notification or restarting the app
+            # For example: systemctl restart your-app-service
+        fi
 
-    sleep 300  # Check every 5 minutes
-    done
+        sleep 300  # Check every 5 minutes
+        done
 
-  ~~~
+      ~~~
+   - 실행
+     ~~~sh
+      ./memory_monitor.sh &
+     ~~~
+     
