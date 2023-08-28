@@ -111,11 +111,11 @@
     
     if [ -z ${IDLE_PORT} ]
     then
-    echo "> 현재 구동 중인 애플리케이션이 없으므로 종료하지 않습니다."
+      echo "> 현재 구동 중인 애플리케이션이 없으므로 종료하지 않습니다."
     else
-    echo "> kill -15 $IDLE_PID"
-    kill -15 ${IDLE_PID}
-    sleep 5
+      echo "> kill -15 $IDLE_PID"
+      kill -15 ${IDLE_PID}
+      sleep 5
     fi
   ~~~
 
@@ -165,9 +165,9 @@
     echo "> $JAR_NAME 를 profile=$IDLE_PROFILE 로 실행"
     
     nohup java -jar \
-    -Dspring.config.location=classpath:/application.yml,classpath:/application-$IDLE_PROFILE.yml,/home/ec2-user/app/application-oauth.yml,/home/ec2-user/app/application-real-db.yml \
-    -Dspring.profiles.active=$IDLE_PROFILE \
-    $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
+      -Dspring.config.location=classpath:/application.yml,classpath:/application-$IDLE_PROFILE.yml,/home/ec2-user/app/application-oauth.yml,/home/ec2-user/app/application-real-db.yml \
+      -Dspring.profiles.active=$IDLE_PROFILE \
+      $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
   ~~~
   
     - 기존의 deploy.sh 와 같음. 실행 프로필만 IDLE_PROFILE 로 세팅.
