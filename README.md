@@ -225,7 +225,7 @@
   - ```real*``` 프로필로 잘 배포되었는지 확인 + <U>*nginx 가 바라보게 포트 변경 (switch.sh)*</U>
 
 
-- <b>모니터링</b>  
+- <b>모니터링 -> 시큐리티 처리 후 사용할 것</b>  
   - 구성
     ~~~spel
       implementation("org.springframework.boot:spring-boot-starter-actuator")
