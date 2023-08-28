@@ -63,13 +63,62 @@
 ### memo :
 
 - <b>appspec.yml</b>  
-![img_2.png](img_2.png)  
-  - code deploy 에 의해 s3 에서 ec2 로 파일 이동 후 실행 훅
-    - stop.sh --> start.sh --> health.sh  
+    ~~~yaml
+      version: 0.0
+      os: linux
+      files:
+        - source: /
+          destination: /home/ec2-user/app/step3/zip/
+          overwrite: yes
+        
+        permissions:
+        - object: /
+          pattern: "**"
+          owner: ec2-user
+          group: ec2-user
+        
+        hooks:
+        AfterInstall:
+        - location: stop.sh
+        timeout: 60
+        runas: ec2-user
+        ApplicationStart:
+          - location: start.sh
+          timeout: 60
+          runas: ec2-user
+          ValidateService:
+          - location: health.sh
+          timeout: 60
+          runas: ec2-user 
+  ~~~ 
+  
+- code deploy 에 의해 s3 에서 ec2 로 파일 이동 후 실행 훅
+  - stop.sh --> start.sh --> health.sh  
     
 
 - <b>stop.sh</b>  
-![img_3.png](img_3.png)  
+  ~~~sh
+    #!/usr/bin/env bash
+
+    ABSPATH=$(readlink -f $0)
+    ABSDIR=$(dirname $ABSPATH)
+    source ${ABSDIR}/profile.sh
+    
+    IDLE_PORT=$(find_idle_port)
+    
+    echo "> $IDLE_PORT 에서 구동 중인 애플리케이션 pid 확인"
+    IDLE_PID=$(lsof -ti tcp:${IDLE_PORT})
+    
+    if [ -z ${IDLE_PORT} ]
+    then
+    echo "> 현재 구동 중인 애플리케이션이 없으므로 종료하지 않습니다."
+    else
+    echo "> kill -15 $IDLE_PID"
+    kill -15 ${IDLE_PID}
+    sleep 5
+    fi
+  ~~~
+
   - profile.sh 에서 쉬고있는 profile 과 port 를 찾는다
   - <U>*현재 nginx 가 가리키지않는 프로필(IDLE_PROFILE)의 jar를 종료시킴*</U>
   - 처음 배포 시 종료 할 애플리케이션 없음. (8081로 구동)
@@ -87,15 +136,114 @@
       - 계속 번갈아 가면서 바뀐다  
 
    
-- <b>start.sh</b>
-  - 기존의 deploy.sh 와 같음. 실행 프로필만 IDLE_PROFILE 로 세팅.
-    - stop.sh 에 의해 종료된 프로필이 새로 배포되어 실행될 프로필이 된다.
-    - <U>*현재 nginx가 가리키고 있지 <b>않는</b> 프로필 실행시킴 (health.sh 에서 nginx 가 가리키게 될 예정)*</U>  
+- <b>start.sh</b>  
+  ~~~sh
+    #!/usr/bin/env bash
+
+    ABSPATH=$(readlink -f $0)
+    ABSDIR=$(dirname $ABSPATH)
+    source ${ABSDIR}/profile.sh
+    
+    REPOSITORY=/home/ec2-user/app/step3
+    PROJECT_NAME=freelec3
+    
+    echo "> Build 파일 복사"
+    cp $REPOSITORY/zip/*.jar $REPOSITORY/
+    
+    
+    echo "> 새 애플리케이션 배포"
+    JAR_NAME=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
+    
+    echo "> JAR_NAME: $JAR_NAME"
+    echo "> $JAR_NAME 에 실행권한 추가"
+    chmod +x $JAR_NAME
+    
+    echo "> $JAR_NAME 실행"
+    
+    IDLE_PROFILE=$(find_idle_profile)
+    
+    echo "> $JAR_NAME 를 profile=$IDLE_PROFILE 로 실행"
+    
+    nohup java -jar \
+    -Dspring.config.location=classpath:/application.yml,classpath:/application-$IDLE_PROFILE.yml,/home/ec2-user/app/application-oauth.yml,/home/ec2-user/app/application-real-db.yml \
+    -Dspring.profiles.active=$IDLE_PROFILE \
+    $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
+  ~~~
+  
+    - 기존의 deploy.sh 와 같음. 실행 프로필만 IDLE_PROFILE 로 세팅.
+      - stop.sh 에 의해 종료된 프로필이 새로 배포되어 실행될 프로필이 된다.
+      - <U>*현재 nginx가 가리키고 있지 <b>않는</b> 프로필 실행시킴 (health.sh 에서 nginx 가 가리키게 될 예정)*</U>  
   
 
   
     
 - <b>health.sh</b>  
-![img_4.png](img_4.png)
+  ~~~sh
+    #! /usr/bin/env bash
+
+    ABSPATH=$(readlink -f $0)
+    ABSDIR=$(dirname $ABSPATH)
+    source ${ABSDIR}/profile.sh
+    source ${ABSDIR}/switch.sh
+    
+    IDLE_PORT=$(find_idle_port)
+    
+    echo "> Health Check Start!"
+    echo "> IDLE_PORT: $IDLE_PORT"
+    echo "> curl -s http://localhost:$IDLE_PORT/profile"
+    sleep 10
+    
+    for RETRY_COUNT in {1..10}
+    do
+    RESPONSE=$(curl -s http://localhost:${IDLE_PORT}/profile)
+    UP_COUNT=$(echo ${RESPONSE} | grep 'real' | wc -l)
+
+    if [ ${UP_COUNT} -ge 1 ]
+    then # $up_count >=1 ("real" 문자열이 있는지 검증)
+        echo "> Health check 성공"
+        switch_proxy
+        break
+    else
+        echo "> Health check의 응답을 알 수 없거나 혹은 실행 상태가 아닙니다."
+        echo "> Health check: ${RESPONSE}"
+    fi
+
+    if [ ${RETRY_COUNT} -eq 10 ]
+    then
+        echo "> Health check 실패."
+        echo "> 엔진엑스에 연결하지 않고 배포를 종료합니다."
+        exit 1
+    fi
+
+    echo "> Health check 연결 실패. 재시도..."
+    sleep 10
+    done
+
+  ~~~
+
   - start.sh 이후 실행된 *nginx가 바라보고 있지 않는 프로필*을 nginx가 바라보게 함
   - ```real*``` 프로필로 잘 배포되었는지 확인 + <U>*nginx 가 바라보게 포트 변경 (switch.sh)*</U>
+
+
+- 모니터링
+  ~~~sh
+    #!/bin/bash
+
+    APP_URL="http://localhost:8080/actuator/prometheus"  # Update with your actual app URL
+    MEMORY_THRESHOLD=85  # Percentage threshold
+    
+    while true; do
+    MEMORY_USAGE=$(curl -s "$APP_URL" | grep jvm_memory_used_bytes | awk '{print $2}')
+    MEMORY_MAX=$(curl -s "$APP_URL" | grep jvm_memory_max_bytes | awk '{print $2}')
+    MEMORY_PERCENTAGE=$(bc <<< "scale=2; $MEMORY_USAGE / $MEMORY_MAX * 100")
+
+    if (( $(echo "$MEMORY_PERCENTAGE > $MEMORY_THRESHOLD" | bc -l) )); then
+        echo "Memory utilization is above $MEMORY_THRESHOLD%. Taking action..."
+        # Add your action here, such as sending a notification or restarting the app
+        # For example: systemctl restart your-app-service
+    fi
+
+    sleep 300  # Check every 5 minutes
+    done
+
+  ~~~
