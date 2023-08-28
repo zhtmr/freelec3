@@ -245,7 +245,7 @@
       ~~~sh
         #!/bin/bash
 
-        APP_URL="http://localhost:8080/actuator/prometheus"  # Update with your actual app URL
+        APP_URL="http://localhost/actuator/prometheus"  # Update with your actual app URL
         MEMORY_THRESHOLD=85  # Percentage threshold
     
         while true; do
